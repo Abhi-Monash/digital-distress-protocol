@@ -1,3 +1,4 @@
+// vue.config.js
 module.exports = {
-  publicPath: "./digital-distress-protocol/",
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
 };
