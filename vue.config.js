@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: "./digital-distress-protocol/",
+  publicPath: "/digital-distress-protocol/",
 };

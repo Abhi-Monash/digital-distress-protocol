@@ -1,5 +1,6 @@
-import { createRouter, createWebHashHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue"; // ✅ import added
+import { createRouter, createWebHistory } from "vue-router";
+import HomeView from "../views/HomeView.vue";
+import IntroPageView from "../views/IntroPageView.vue"; // ✅ import the component
 
 const routes = [
   {
@@ -9,14 +10,14 @@ const routes = [
   },
   {
     path: "/intro",
-    name: "IntroPage",
-    component: () => import("../views/IntroPageView.vue"),
+    name: "IntroPage", // ✅ this name must match exactly
+    component: IntroPageView,
   },
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(), // ✅ using hash mode
+  history: createWebHistory(),
   routes,
 });
 
-export default router; // ✅ export it to be used in main.js
+export default router;
