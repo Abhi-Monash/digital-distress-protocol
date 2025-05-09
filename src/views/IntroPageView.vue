@@ -43,7 +43,7 @@
 
 <script>
 export default {
-  name: "IntroPageView",
+  name: "IntropageView",
   data() {
     return {
       isBangla: false,
