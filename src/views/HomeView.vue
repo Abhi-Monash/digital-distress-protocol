@@ -1,80 +1,78 @@
 <template>
-  <div class="home-container">
-    <h1>
-      <span class="highlight"> Digital Distress Protocol</span>
-    </h1>
-    <p>Please select your preferred language to begin:</p>
-
-    <div class="language-options">
-      <label>
-        <input type="radio" value="English" v-model="language" />
-        English
-      </label>
-      <label>
-        <input type="radio" value="Bangla" v-model="language" />
-        Bangla
-      </label>
+  <div class="home-hero">
+    <div class="overlay">
+      <div class="content">
+        <h1 class="protocol-name">Distress Protocol</h1>
+        <p class="tagline">
+          A Digital Distress Protocol for Compassionate Mental Health Support
+        </p>
+        <button class="get-started" @click="goToNextPage">Get Started</button>
+      </div>
     </div>
-
-    <button @click="continueToAssessment">Continue</button>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      language: "English",
-    };
-  },
   methods: {
-    continueToAssessment() {
-      this.$router.push({
-        name: "CategoryA",
-        query: { lang: this.language },
-      });
+    goToNextPage() {
+      this.$router.push({ name: "IntroPage" }); // Adjust route name as needed
     },
   },
 };
 </script>
 
 <style scoped>
-.home-container {
-  max-width: 600px;
-  margin: 60px auto;
-  text-align: center;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
-}
-
-.highlight {
-  color: #4a90e2;
-}
-
-.language-options {
-  margin: 20px 0;
+.home-hero {
+  background: url("https://source.unsplash.com/1600x900/?calm,nature,mental-health")
+    center/cover no-repeat;
+  height: 100vh;
+  margin: 0;
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 40px;
 }
 
-label {
-  font-size: 1.1rem;
-  cursor: pointer;
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-button {
-  background-color: #4a90e2;
+.content {
+  text-align: center;
   color: white;
-  padding: 12px 24px;
+  max-width: 700px;
+  padding: 0 20px;
+}
+
+.protocol-name {
+  font-size: 4rem;
+  font-weight: bold;
+  color: #00bcd4;
+  margin-bottom: 10px;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.get-started {
+  padding: 14px 32px;
   font-size: 1rem;
+  background-color: #00bcd4;
   border: none;
-  border-radius: 6px;
+  border-radius: 30px;
+  color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #357ab8;
+.get-started:hover {
+  background-color: #0097a7;
 }
 </style>
