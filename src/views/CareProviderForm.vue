@@ -2,7 +2,7 @@
   <div class="form-wrapper">
     <div class="top-bar">
       <label class="toggle-switch">
-        <input type="checkbox" v-model="isBangla" />
+        <input type="checkbox" v-model="isBangla" @change="saveLanguage" />
         <span class="slider"></span>
       </label>
       <span>{{ isBangla ? "বাংলা" : "English" }}</span>
@@ -10,7 +10,7 @@
 
     <h2>{{ t("title") }}</h2>
 
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleNext">
       <label>{{ t("firstName") }}</label>
       <input v-model="form.firstName" required />
 
@@ -41,19 +41,21 @@
 </template>
 
 <script>
-function generateUUID() {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-    const r = (Math.random() * 16) | 0,
-      v = c === "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
+// function generateUUID() {
+//   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+//     const r = (Math.random() * 16) | 0,
+//       v = c === "x" ? r : (r & 0x3) | 0x8;
+//     return v.toString(16);
+//   });
+// }
+
 export default {
   name: "CareProviderForm",
   data() {
     return {
-      isBangla: false,
+      isBangla: localStorage.getItem("language") === "bn",
       form: {
+        user_id: "", // will set in created()
         firstName: "",
         lastName: "",
         date: new Date().toISOString().slice(0, 10),
@@ -113,44 +115,31 @@ export default {
         ? this.translations.bn[key]
         : this.translations.en[key];
     },
-    handleSubmit() {
-      if (!this.form.firstName || !this.form.lastName) {
-        alert(
-          this.t("firstName") + " & " + this.t("lastName") + " are required."
-        );
+    saveLanguage() {
+      localStorage.setItem("language", this.isBangla ? "bn" : "en");
+    },
+    handleNext() {
+      if (!this.form.category) {
+        alert("Please select a category.");
         return;
       }
 
-      // Generate or reuse a user_id
-      const user_id = localStorage.getItem("user_id") || generateUUID();
-      localStorage.setItem("user_id", user_id);
+      localStorage.setItem("user_id", this.form.user_id);
+      localStorage.setItem("first_name", this.form.firstName);
+      localStorage.setItem("last_name", this.form.lastName);
+      localStorage.setItem("form_date", this.form.date);
+      localStorage.setItem("form_time", this.form.time);
+      localStorage.setItem("category", this.form.category);
+      localStorage.setItem("care_provider", JSON.stringify(this.form));
 
-      // Submit the form data to Netlify Function
-      fetch("/.netlify/functions/submitCareProvider", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user_id,
-          firstName: this.form.firstName,
-          lastName: this.form.lastName,
-          date: this.form.date,
-          time: this.form.time,
-          category: this.form.category,
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
-            alert("Form submitted successfully!");
-            this.$router.push({ name: "NextPage" });
-          } else {
-            console.error("Server error:", data);
-            alert("Submission failed: " + (data.error || "Unknown error"));
-          }
-        })
-        .catch((err) => {
-          alert("Error submitting form: " + err.message);
-        });
+      const routeMap = {
+        A: "CategoryAForm",
+        B: "CategoryBForm",
+        C: "CategoryCForm",
+        D: "CategoryDForm",
+      };
+
+      this.$router.push({ name: routeMap[this.form.category] });
     },
   },
 };
@@ -160,6 +149,8 @@ export default {
 .form-wrapper {
   padding: 20px;
   font-family: sans-serif;
+  max-width: 700px;
+  margin: auto;
 }
 
 .top-bar {

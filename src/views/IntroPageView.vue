@@ -105,6 +105,7 @@ export default {
         : this.translations.en[key];
     },
     goToNext() {
+      localStorage.setItem("language", this.isBangla ? "bn" : "en");
       this.$router.push({ name: "CareProviderForm" }); // Replace with your actual next route name
     },
   },
