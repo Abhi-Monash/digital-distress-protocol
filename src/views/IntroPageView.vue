@@ -105,7 +105,7 @@ export default {
         : this.translations.en[key];
     },
     goToNext() {
-      this.$router.push({ name: "NextFormPage" }); // Replace with your actual next route name
+      this.$router.push({ name: "CareProviderForm" }); // Replace with your actual next route name
     },
   },
 };
