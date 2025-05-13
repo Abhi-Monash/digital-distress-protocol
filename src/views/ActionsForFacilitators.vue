@@ -164,15 +164,37 @@ export default {
     },
     async submitAllData() {
       try {
+        const category = localStorage.getItem("category");
+
         const finalData = {
           user_id: localStorage.getItem("user_id"),
           firstName: localStorage.getItem("first_name"),
           lastName: localStorage.getItem("last_name"),
           date: localStorage.getItem("form_date"),
           time: localStorage.getItem("form_time"),
-          category: localStorage.getItem("category"),
-          categoryA: JSON.parse(localStorage.getItem("categoryA") || "{}"),
+          category,
         };
+
+        // ✅ Only include categoryA data if it exists and relevant
+        if (category === "A") {
+          const catA = localStorage.getItem("categoryA");
+          if (catA) {
+            finalData.categoryA = JSON.parse(catA);
+          }
+        }
+
+        if (category === "B") {
+          const sectionE = localStorage.getItem("categoryB_SectionE");
+          if (sectionE) {
+            finalData.categoryB_SectionE = JSON.parse(sectionE);
+          }
+        }
+        if (category === "C") {
+          const catC = localStorage.getItem("categoryC");
+          if (catC) {
+            finalData.categoryC = JSON.parse(catC);
+          }
+        }
 
         const res = await fetch("/.netlify/functions/submitCareProvider", {
           method: "POST",

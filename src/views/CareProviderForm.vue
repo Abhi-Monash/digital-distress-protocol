@@ -123,6 +123,9 @@ export default {
         alert("Please select a category.");
         return;
       }
+      if (this.form.category !== "A") {
+        localStorage.removeItem("categoryA");
+      }
 
       localStorage.setItem("user_id", this.form.user_id);
       localStorage.setItem("first_name", this.form.firstName);
